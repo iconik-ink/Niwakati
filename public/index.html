@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ni-Wakati Sports Africa — 3D scroll</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#e8e1cc;--ink:#15120f;--red:#d7261e;--green:#138a3e;--bg:var(--cream);--fg:var(--ink);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--cream);font-family:"Bricolage Grotesque",system-ui,sans-serif;color:var(--fg)}
+#tunnel{position:relative;height:520vh}
+.stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:var(--bg);perspective:1000px;perspective-origin:50% 45%}
+.title{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:clamp(5rem,26vw,24rem);letter-spacing:-.05em;line-height:.8;color:var(--red);text-align:center;pointer-events:none;will-change:transform,opacity}
+.title.end{color:var(--cream);opacity:0}
+.world{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.card{position:absolute;left:50%;top:50%;transform-style:preserve-3d;will-change:transform,opacity}
+.card .face{position:relative;width:100%;height:100%;border-radius:6px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.card::before{content:"";position:absolute;inset:0;border-radius:6px;transform:translate3d(16px,16px,-40px)}
+.card.logo::before{display:none}.card.logo .face{border-radius:50%;background:var(--cream);display:grid;place-items:center;box-shadow:0 0 0 8px var(--red),0 0 0 16px #15120f,0 0 0 24px var(--green),0 40px 70px rgba(0,0,0,.35)}.card.logo img{width:76%;height:76%;object-fit:contain}
+.card.r::before{background:var(--red)}.card.g::before{background:var(--green)}.card.k::before{background:#f1ecdc}
+.face video,.face img{width:100%;height:100%;object-fit:cover;display:block}
+.bar{position:absolute;height:10px;border-radius:5px;will-change:transform,opacity}
+.badge{position:absolute;z-index:5;top:calc(18px + env(safe-area-inset-top,0px));right:clamp(18px,4vw,48px);width:clamp(60px,9vw,100px);aspect-ratio:1;border-radius:50%;background:var(--cream);display:grid;place-items:center;box-shadow:0 0 0 3px var(--red),0 0 0 6px #15120f,0 0 0 9px var(--green),0 10px 24px rgba(0,0,0,.3)}.badge img{width:80%;height:80%;object-fit:contain}
+.hud{position:absolute;left:clamp(16px,4vw,48px);right:clamp(16px,4vw,48px);bottom:calc(20px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:flex-end;gap:16px;color:var(--fg);pointer-events:none}
+.hud h2{margin:0;font-size:clamp(1.4rem,4vw,2.6rem);font-weight:800;letter-spacing:-.02em;line-height:1}
+.hud p{margin:6px 0 0;font-size:clamp(.9rem,1.6vw,1.1rem);max-width:34ch;opacity:.85}
+.hud .cap{transition:opacity .25s}
+.prog{position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--red) 33%,#15120f 33% 66%,var(--green) 66%);transform-origin:0 50%;transform:scaleX(0)}
+@media (prefers-reduced-motion:reduce){.hud .cap{transition:none}}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:10000;padding:16px 20px;display:flex;justify-content:center;pointer-events:none}
+.mnav{pointer-events:auto;background:rgba(232,225,204,.88);backdrop-filter:blur(14px);border-radius:60px;padding:6px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.mnav ul{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+.mnav a{display:block;padding:10px 18px;border-radius:40px;font-weight:600;font-size:.95rem;color:#15120f;text-decoration:none;transition:.2s}
+.mnav a:hover{background:var(--green);color:#fff}
+.mt{display:none;pointer-events:auto;position:absolute;left:18px;top:calc(16px + env(safe-area-inset-top,0px));width:46px;height:46px;border-radius:50%;border:0;background:var(--cream);color:#15120f;font-size:24px;cursor:pointer;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.badge{position:fixed!important}
+@media(max-width:1000px){.mt{display:grid}.mnav{position:fixed;top:0;left:-100%;width:260px;height:100dvh;border-radius:0;padding:90px 16px;background:rgba(21,18,15,.96);transition:left .3s}.mnav.open{left:0}.mnav ul{flex-direction:column}.mnav a{color:#e8e1cc}}
+.bc{font-family:"Barlow Condensed",sans-serif}
+.sc{background:#0f0f0f}
+.scard{position:sticky;top:0;height:125svh;perspective:1000px}
+.sci{position:relative;height:100%;display:flex;flex-direction:column;overflow:hidden;transform-origin:50% 100%;will-change:transform;color:#fff;text-align:center}
+.sci video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sci::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:1}
+.sci::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--ao,0);z-index:3;pointer-events:none}
+.sci>div{position:relative;z-index:2}
+.sci .lab{text-align:left;padding:90px clamp(20px,4vw,48px) 0;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:.9rem}
+.sci h2{font-family:"Barlow Condensed",sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(4rem,16vw,10rem);line-height:1;padding:24px 0;margin:0}
+.sci p{font-size:clamp(1rem,2.2vw,1.5rem);text-transform:uppercase;max-width:60ch;margin:0 auto;padding:0 20px}
+.outro{display:grid;place-items:center;text-align:center;height:100svh;padding:32px;background:var(--cream);color:#15120f}
+.outro h2{font-family:"Barlow Condensed",sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(3rem,11vw,8rem);margin:0;line-height:1}
+.sec{padding:100px 20px;background:#0a0a0a;color:#fff}
+.sec h2.st{text-align:center;font-family:"Barlow Condensed",sans-serif;font-size:2.5rem;font-weight:700;margin:0 0 50px}
+.slc{max-width:1200px;margin:0 auto;overflow:hidden;border-radius:20px}
+.sl{display:flex;transition:transform .5s ease}
+.slide{min-width:100%;height:min(500px,70vw);position:relative}
+.slide video,.bn video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cap2{position:absolute;left:0;right:0;bottom:0;padding:40px;background:linear-gradient(transparent,rgba(0,0,0,.9))}
+.cap2 h3,.bn h3{font-family:"Barlow Condensed",sans-serif;font-size:2rem;margin:0 0 8px}
+.cap2 p,.bn p{margin:0;opacity:.9}
+.ctl{display:flex;justify-content:center;gap:20px;margin-top:30px}
+.ctl button{width:50px;height:50px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:1.4rem;cursor:pointer}
+.ctl button:hover{background:var(--green);border-color:var(--green)}
+.bg{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:30px}
+.bn{position:relative;border-radius:20px;overflow:hidden;height:350px;transition:transform .3s}
+.bn:hover{transform:translateY(-10px)}
+.bn div{position:absolute;left:0;right:0;bottom:0;padding:30px;background:linear-gradient(transparent,rgba(0,0,0,.95));z-index:2}
+.bn h3{color:#3cb55c}
+.bn a{display:inline-block;margin-top:14px;padding:8px 25px;border-radius:25px;background:rgba(19,138,62,.4);color:#fff;text-decoration:none;font-weight:600}
+.news{background:#000;text-align:center;padding:80px 20px;color:#fff}
+.news h2{font-family:"Barlow Condensed",sans-serif;font-size:2.2rem;margin:0 0 12px;color:#3cb55c}
+.news form{display:flex;gap:15px;max-width:550px;margin:30px auto 0;flex-wrap:wrap;justify-content:center}
+.news input{flex:2 1 250px;padding:16px 25px;border:2px solid rgba(255,255,255,.25);background:#141414;border-radius:60px;color:#fff;font:inherit}
+.news button{padding:16px 40px;border:0;border-radius:60px;background:var(--green);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.news button:hover{background:#0e6a2f}
+footer.ft{background:#0a0a0a;color:#fff;padding:70px 20px 30px;border-top:2px solid rgba(19,138,62,.4)}
+.fg{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px}
+.fg h3{font-family:"Barlow Condensed",sans-serif;font-size:1.5rem;color:#3cb55c;margin:0 0 16px}
+.fg ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.fg a,.fg p{color:rgba(255,255,255,.8);text-decoration:none;margin:0 0 10px}
+.fg a:hover{color:#3cb55c}
+.soc{display:flex;gap:12px;margin-top:14px}
+.soc a{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;font-weight:700;margin:0}
+.fb{max-width:1300px;margin:40px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.15);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:rgba(255,255,255,.6);font-size:.9rem}
+#cine{height:100vh;height:100dvh;position:relative;background:var(--cream);overflow:hidden}
+.ct,.ce{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-weight:800;letter-spacing:-.05em;line-height:.8;margin:0;pointer-events:none}
+.ct{z-index:1;color:var(--red);font-size:clamp(5rem,26vw,24rem)}
+.ce{z-index:4;color:var(--cream);font-size:clamp(4rem,18vw,16rem);opacity:0;visibility:hidden}
+.ly{position:absolute;inset:0;z-index:2;overflow:hidden;background:#000}
+.ly::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,rgba(0,0,0,.75));z-index:1}
+#l1{clip-path:circle(0% at 50% 50%)}#l2{clip-path:inset(100% 0 0 0)}#l3{clip-path:inset(0 0 0 100%)}
+.vw{position:absolute;inset:0}
+.vw video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#l3 .vw .bl{filter:blur(28px) brightness(.55);transform:scale(1.2)}
+#l3 .vw .mn{object-fit:contain}
+.cp{position:absolute;z-index:4;left:clamp(20px,5vw,72px);bottom:13vh;max-width:min(620px,86vw);color:var(--cream);opacity:0;visibility:hidden}
+.cp h2{margin:0;font-family:"Barlow Condensed",sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(3.4rem,10vw,8rem);line-height:.9}
+.cp p{margin:12px 0 0;font-size:clamp(1rem,2vw,1.35rem);max-width:34ch}
+.ce p{margin:14px 0 0;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:500;font-size:clamp(1rem,2vw,1.4rem);letter-spacing:0;line-height:1.35;color:var(--cream);max-width:34ch;text-transform:none}
+.ce h2,.ce p{margin-left:auto;margin-right:auto;text-align:center}
+#c4.cp.ce{left:0;right:0;bottom:0;max-width:none;align-content:center;justify-items:center;padding:0 20px}
+.lb{position:absolute;left:0;right:0;height:7vh;background:#000;z-index:5;transform:scaleY(0)}
+.lb.t{top:0;transform-origin:50% 0}.lb.b{bottom:0;transform-origin:50% 100%}
+.dim{position:absolute;inset:0;background:var(--ink);z-index:3;opacity:0;pointer-events:none}
+.pg{position:absolute;left:0;right:0;bottom:0;height:6px;z-index:6;background:linear-gradient(90deg,var(--red) 33%,#15120f 33% 66%,var(--green) 66%);transform-origin:0 50%;transform:scaleX(0)}
+</style>
+</head>
+<body>
+<header class="hdr"><button class="mt" id="mt" aria-label="Menu">☰</button><nav class="mnav" id="mnav"><ul><li><a href="index.html">Home</a></li><li><a href="events.html">Highlights</a></li><li><a href="insights.html">Stories</a></li><li><a href="#initiatives">Initiatives</a></li><li><a href="involved.html">Get involved</a></li></ul></nav></header>
+<div class="badge" style="z-index:10002" aria-label="Ni-Wakati Sports Africa"><img alt="Ni-Wakati Sports Africa logo" src="assets/img/logo.png"></div>
+<div id="home"></div>
+<section id="cine" aria-label="Ni-Wakati Sports Africa highlights">
+ <h1 class="ct">Ni wakati.</h1>
+ <div class="ly" id="l1"><div class="vw"><video data-v="a" muted loop playsinline autoplay></video></div></div>
+ <div class="ly" id="l2"><div class="vw"><video data-v="b" muted loop playsinline autoplay></video></div></div>
+ <div class="ly" id="l3"><div class="vw"><video class="bl" data-v="c" muted loop playsinline autoplay></video><video class="mn" data-v="c" muted loop playsinline autoplay></video></div></div>
+ <div class="dim"></div>
+ <div class="cp" id="c1"><h2>Football</h2><p>Speed you can see, from the studs up.</p></div>
+ <div class="cp" id="c2"><h2>Basketball</h2><p>Every drive starts in the legs.</p></div>
+ <div class="cp" id="c3"><h2>Tennis</h2><p>Clay, lines and one clean serve.</p></div>
+<div class="cp ce" id="c4">
+  <h2>Your move.</h2>
+  <p>Welcome  to NIWAKATI SPORTS <br>Empowering African Communities.  <br>Through Sports &amp; Tourism</p> 
+</div>
+ 
+ <div class="lb t"></div><div class="lb b"></div><div class="pg"></div>
+</section>
+<section class="sc" id="events">
+ <div class="scard"><div class="sci"><video data-v="d" muted loop playsinline autoplay></video><div class="lab">Latest news</div><div><h2>News</h2></div><div><p>Community sports initiatives reaching new heights</p></div></div></div>
+ <div class="scard"><div class="sci"><video data-v="b" muted loop playsinline autoplay></video><div class="lab">Upcoming events</div><div><h2>Events</h2></div><div><p>International sports tournaments across Africa</p></div></div></div>
+ <div class="scard"><div class="sci"><video data-v="c" muted loop playsinline autoplay></video><div class="lab">Emerging sports</div><div><h2>Emerging</h2></div><div><p>New disciplines creating opportunities</p></div></div></div>
+ <div class="scard"><div class="sci"><video data-v="e" muted loop playsinline autoplay></video><div class="lab">Impact stories</div><div><h2>Impact</h2></div><div><p>Transforming lives through sports</p></div></div></div>
+</section>
+<section class="outro"><h2>Join our movement</h2></section>
+<section class="sec" id="stories"><h2 class="st">Stories</h2>
+ <div class="slc"><div class="sl" id="sl">
+  <div class="slide"><video data-v="a" muted loop playsinline autoplay></video><div class="cap2"><h3>Community Sports</h3><p>Building stronger communities through sports</p></div></div>
+  <div class="slide"><video data-v="b" muted loop playsinline autoplay></video><div class="cap2"><h3>Youth Empowerment</h3><p>Creating opportunities for young athletes</p></div></div>
+  <div class="slide"><video data-v="c" muted loop playsinline autoplay></video><div class="cap2"><h3>Sports Tourism</h3><p>Promoting Africa as a premier destination</p></div></div>
+ </div></div>
+ <div class="ctl"><button id="pv" aria-label="Previous">←</button><button id="nx" aria-label="Next">→</button></div>
+</section>
+<section class="sec" id="initiatives" style="background:#000"><h2 class="st">Initiatives</h2>
+ <div class="bg">
+  <div class="bn"><video data-v="a" muted loop playsinline autoplay></video><div><h3>Sports &amp; Tourism</h3><p>Developing sports infrastructure and events that promote tourism and economic growth across Africa.</p><a href="#involved">Learn more</a></div></div>
+  <div class="bn"><video data-v="b" muted loop playsinline autoplay></video><div><h3>Emerging Sports</h3><p>Supporting new and alternative sports to create diverse opportunities for young athletes.</p><a href="#involved">Learn more</a></div></div>
+  <div class="bn"><video data-v="c" muted loop playsinline autoplay></video><div><h3>Impact Stories</h3><p>Sharing inspiring stories of communities and individuals empowered through sports.</p><a href="#involved">Learn more</a></div></div>
+ </div>
+</section>
+<section class="news" id="involved"><h2>Subscribe to our newsletter</h2><p>Get the latest updates on our programs, events, and community stories.</p>
+ <form id="nf"><input type="email" id="em" placeholder="Enter your email address" required aria-label="Email address"><button type="submit">Subscribe</button></form><p id="nm"></p></section>
+<footer class="ft"><div class="fg">
+ <div><h3>Ni-Wakati</h3><p>Empowering African communities through sports and tourism.</p><div class="soc"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="X">X</a><a href="#" aria-label="Instagram">ig</a><a href="#" aria-label="LinkedIn">in</a><a href="#" aria-label="YouTube">yt</a></div></div>
+ <div><h3>Explore</h3><ul><li><a href="#home">Home</a></li><li><a href="#events">Highlights</a></li><li><a href="#stories">Stories</a></li><li><a href="#initiatives">Initiatives</a></li></ul></div>
+ <div><h3>Contact</h3><p>Email: niwakatisports@gmail.com</p><p>Phone: +254 731 993 460</p><p>Address: Nairobi, Kenya</p></div>
+ <div><h3>Programs</h3><ul><li><a href="#initiatives">Sports &amp; Tourism</a></li><li><a href="#initiatives">Emerging Sports</a></li><li><a href="#initiatives">Youth Leadership</a></li></ul></div>
+</div>
+<div class="fb"><span>&copy; <span id="yr"></span> Ni-Wakati Sports Africa. All rights reserved. Website designed by @Iconic.ink</span><span>Privacy Policy &nbsp; Terms of Use</span></div></footer>
+<script>var VID={a:"assets/videos/sports-1.mp4",b:"assets/videos/sports-2.mp4",c:"assets/videos/sports-3.mp4",d:"assets/videos/news.mp4",e:"assets/videos/impact.mp4"};document.querySelectorAll("video[data-v]").forEach(function(v){v.src=VID[v.dataset.v]});</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script><script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/ScrollTrigger.min.js"></script>
+<script>(function(){
+var nav=document.getElementById('mnav'),mt=document.getElementById('mt');
+mt.onclick=function(){var o=nav.classList.toggle('open');mt.textContent=o?'✕':'☰'};
+nav.querySelectorAll('a').forEach(function(a){a.onclick=function(){nav.classList.remove('open');mt.textContent='☰'}});
+var sl=document.getElementById('sl'),n=sl.children.length,c=0;
+function go(i){c=(i+n)%n;sl.style.transform='translateX(-'+c*100+'%)'}
+document.getElementById('nx').onclick=function(){go(c+1)};document.getElementById('pv').onclick=function(){go(c-1)};
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches)setInterval(function(){go(c+1)},5000);
+document.getElementById('nf').onsubmit=function(e){e.preventDefault();document.getElementById('nm').textContent='Subscribed successfully!';document.getElementById('em').value=''};
+document.getElementById('yr').textContent=new Date().getFullYear();
+if(window.gsap&&window.ScrollTrigger&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+gsap.registerPlugin(ScrollTrigger);var cs=gsap.utils.toArray('.scard');
+cs.forEach(function(card,i){if(i<cs.length-1){var inn=card.querySelector('.sci');
+gsap.fromTo(inn,{y:'0%'},{y:'-50%',rotationX:25,scrollTrigger:{trigger:cs[i+1],start:'top 85%',end:'top -75%',scrub:true,pin:card,pinSpacing:false}});
+gsap.to(inn,{'--ao':1,scrollTrigger:{trigger:cs[i+1],start:'top 75%',end:'top -25%',scrub:true}})}})}
+if(window.gsap&&window.ScrollTrigger){
+gsap.registerPlugin(ScrollTrigger);
+var tl=gsap.timeline({defaults:{ease:'power2.inOut'},scrollTrigger:{trigger:'#cine',start:'top top',end:'+=450%',pin:true,scrub:.6,anticipatePin:1,refreshPriority:1}});
+tl.to('.ct',{scale:2.4,autoAlpha:0,duration:1.5,ease:'power2.in'},0)
+.fromTo('#l1',{clipPath:'circle(0% at 50% 50%)'},{clipPath:'circle(75% at 50% 50%)',duration:1.6},.2)
+.fromTo('#l1 .vw',{scale:1.35},{scale:1,duration:3.4,ease:'none'},.2)
+.fromTo('.lb',{scaleY:0},{scaleY:1,duration:1},.4)
+.fromTo('#c1',{autoAlpha:0,y:50},{autoAlpha:1,y:0,duration:.8},1.5).to('#c1',{autoAlpha:0,y:-40,duration:.6},3.1)
+.fromTo('#l2',{clipPath:'inset(100% 0% 0% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.2,ease:'power3.inOut'},3.2)
+.fromTo('#l2 .vw',{scale:1.3},{scale:1.02,duration:3,ease:'none'},3.2)
+.fromTo('#c2',{autoAlpha:0,y:50},{autoAlpha:1,y:0,duration:.8},4.4).to('#c2',{autoAlpha:0,y:-40,duration:.6},6.1)
+.fromTo('#l3',{clipPath:'inset(0% 0% 0% 100%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.2,ease:'power3.inOut'},6.2)
+.fromTo('#l3 .vw',{scale:1.15},{scale:1,duration:3,ease:'none'},6.2)
+.fromTo('#c3',{autoAlpha:0,y:50},{autoAlpha:1,y:0,duration:.8},7.4).to('#c3',{autoAlpha:0,y:-40,duration:.6},9)
+.to('.dim',{opacity:1,duration:.8,ease:'none'},9.1)
+.fromTo('.ce',{autoAlpha:0,scale:.8},{autoAlpha:1,scale:1,duration:.8},9.3)
+.fromTo('.pg',{scaleX:0},{scaleX:1,duration:10.5,ease:'none'},0)
+.to({},{duration:.4},10.5)}
+})();
+</script>
+</body>
+</html>

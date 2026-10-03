@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stories & Insights | Ni-Wakati Sports Africa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06110c;--ink:#f1ece0;--mute:rgba(241,236,224,.68);--g:#2c7a2c;--g2:#3fcf8e;--gold:#e9b949;--line:rgba(241,236,224,.16);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.55;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+#bar{position:fixed;top:0;left:0;height:3px;width:100%;background:linear-gradient(90deg,var(--g),var(--gold));transform:scaleX(0);transform-origin:0 50%;z-index:60}
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 4vw;background:linear-gradient(var(--bg),transparent)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;text-decoration:none;letter-spacing:-.02em}
+.logo{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 30% 25%,var(--g2),var(--g));border:1px solid rgba(255,255,255,.35);box-shadow:0 8px 24px rgba(0,0,0,.4);flex:none}
+.logo em{font-style:normal;font-weight:800;font-size:1.1rem;color:#fff}
+.logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;background:#fff}
+nav ul{display:flex;gap:clamp(12px,2.4vw,34px);list-style:none;overflow-x:auto}
+nav a{text-decoration:none;font-size:.92rem;color:var(--mute);white-space:nowrap}
+nav a:hover,nav a[aria-current]{color:var(--ink)}
+nav a[aria-current]{border-bottom:2px solid var(--gold)}
+.hero{height:100vh;height:100svh;position:relative;overflow:hidden;display:grid;place-items:center;perspective:900px;text-align:center}
+.world{position:absolute;inset:0;transform-style:preserve-3d;display:grid;place-items:center}
+.ring{position:absolute;width:70vmin;height:40vmin;border-radius:50%;border:2px solid rgba(63,207,142,.5);box-shadow:0 0 40px rgba(44,122,44,.35),inset 0 0 40px rgba(44,122,44,.2);transform:rotateX(68deg)}
+.ring:nth-child(even){border-color:rgba(233,185,73,.45)}
+.word{position:absolute;font-weight:800;font-size:clamp(3rem,13vw,11rem);letter-spacing:-.05em;line-height:.9;will-change:transform}
+.w1{color:var(--ink)}.w2{color:var(--gold)}.w3{-webkit-text-stroke:2px var(--g2);color:transparent}
+.sub{position:absolute;bottom:12vh;max-width:36rem;padding:0 6vw;color:var(--mute);font-size:clamp(1rem,2vw,1.25rem)}
+.cue{position:absolute;bottom:4vh;font-size:.85rem;color:var(--mute)}
+section{position:relative}
+.wrap{max-width:1180px;margin:0 auto;padding:0 5vw}
+h2{font-size:clamp(2rem,5vw,3.6rem);line-height:1.05;letter-spacing:-.03em;font-weight:800}
+.tag{display:inline-block;background:var(--g);color:#fff;padding:6px 16px;border-radius:99px;font-weight:600;font-size:.88rem;margin-bottom:18px}
+.feat{padding:18vh 0;perspective:1200px}
+.feat .wrap{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center}
+.feat p{color:var(--mute);margin:20px 0;font-size:1.1rem;max-width:34rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;color:var(--mute);font-size:.9rem}
+.btn{display:inline-block;margin-top:26px;background:var(--gold);color:#1a1405;padding:13px 26px;border-radius:12px;font-weight:600;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:600}
+.slab{aspect-ratio:4/5;max-height:70vh;margin:auto;width:100%;max-width:440px;border-radius:28px;transform-style:preserve-3d;position:relative;background:radial-gradient(circle at 30% 20%,#3fcf8e,#2c7a2c 40%,#0b2a17 85%);box-shadow:0 40px 90px rgba(0,0,0,.6);overflow:hidden}
+.slab::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(100deg,transparent 0 38px,rgba(255,255,255,.06) 38px 40px)}
+.slab img.slab-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;border-radius:28px}
+.slab::after{content:"";position:absolute;inset:0;border-radius:28px;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.75) 100%);z-index:1;pointer-events:none}
+.slab b{position:absolute;left:8%;bottom:8%;right:8%;font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1;transform:translateZ(60px);letter-spacing:-.03em;z-index:2}
+.slab i{position:absolute;top:10%;right:10%;width:34%;aspect-ratio:1;border-radius:50%;background:var(--gold);transform:translateZ(90px);box-shadow:0 20px 40px rgba(0,0,0,.35);z-index:2}
+.stories{height:100vh;height:100svh;overflow:hidden;perspective:1700px;display:grid;place-items:center}
+.stories h2{position:absolute;top:13vh;left:5vw;z-index:2}
+.stories .hint{position:absolute;top:calc(13vh + 4.5rem);left:5vw;color:var(--mute);font-size:.9rem}
+.ringbox{position:relative;width:min(300px,74vw);height:min(400px,56vh);transform-style:preserve-3d;margin-top:12vh}
+.card{position:absolute;inset:0;border-radius:22px;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(160deg,var(--c),#0a1a12 78%);border:1px solid var(--line);backface-visibility:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);overflow:hidden}
+.card img.card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;border-radius:22px;opacity:.55}
+.card::after{content:"";position:absolute;inset:0;border-radius:22px;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85) 100%);z-index:1;pointer-events:none}
+.card>*:not(img){position:relative;z-index:2}
+.badge{position:absolute;top:18px;left:18px;font-size:.78rem;font-weight:600;padding:5px 13px;border-radius:99px;background:rgba(0,0,0,.45)}
+.card small{color:var(--gold);font-weight:600;font-size:.82rem}
+.card h3{font-size:1.35rem;line-height:1.15;margin:6px 0 8px;letter-spacing:-.02em}
+.card p{font-size:.88rem;color:var(--mute)}
+.card footer{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:.78rem;color:var(--mute);display:flex;justify-content:space-between}
+.impact{min-height:100vh;display:grid;place-items:center;padding:14vh 0;perspective:1000px}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:56px}
+.num{padding:34px 20px;border-left:3px solid var(--g);background:linear-gradient(90deg,rgba(44,122,44,.18),transparent);transform-style:preserve-3d}
+.num strong{display:block;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1;font-weight:800;color:var(--g2);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.num span{color:var(--mute)}
+.videos{padding:12vh 0;perspective:1400px}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:44px}
+.vcard{background:rgba(241,236,224,.05);border:1px solid var(--line);border-radius:18px;overflow:hidden;transform-style:preserve-3d}
+.thumb{position:relative;height:190px;display:grid;place-items:center;background:linear-gradient(135deg,var(--c),#08140d)}
+.play{width:62px;height:62px;border-radius:50%;border:0;background:var(--gold);color:#1a1405;font-size:1.3rem;cursor:pointer;transition:transform .25s}
+.play:hover{transform:scale(1.12)}
+.vbody{padding:22px}.vbody h3{font-size:1.25rem;margin-bottom:6px}.vbody p{color:var(--mute);font-size:.94rem}
+.vmeta{display:flex;justify-content:space-between;margin-top:14px;font-size:.84rem;color:var(--mute)}
+.news{padding:14vh 0;text-align:center}
+.news p{color:var(--mute);max-width:38rem;margin:18px auto 34px}
+form{display:flex;gap:12px;max-width:520px;margin:0 auto}
+input{flex:1;min-width:0;padding:15px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--ink);font:inherit}
+.msg{min-height:1.6em;margin-top:14px;color:var(--g2)}
+footer.site{border-top:1px solid var(--line);padding:56px 0 30px}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.fgrid h4{margin-bottom:14px;font-size:.95rem}
+.fgrid ul{list-style:none;display:grid;gap:8px}.fgrid a,.fgrid p{color:var(--mute);text-decoration:none;font-size:.94rem}.fgrid a:hover{color:var(--gold)}
+.copy{text-align:center;margin-top:44px;color:var(--mute);font-size:.85rem}
+dialog{border:0;background:#000;border-radius:14px;width:min(860px,92vw);padding:0;margin:auto}
+dialog::backdrop{background:rgba(0,0,0,.85)}
+dialog iframe{width:100%;aspect-ratio:16/9;border:0;display:block}
+dialog button{position:absolute;top:8px;right:10px;z-index:2;background:var(--gold);border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:600}
+
+/* ----- MOBILE VIEW OPTIMIZATIONS (no content changes) ----- */
+@media(max-width:860px){
+  header{padding:12px 4vw}
+  .logo{width:44px;height:44px}
+  .bt{display:none}
+  nav ul{gap:16px;padding-bottom:4px;overflow-x:auto;flex-wrap:nowrap}
+  nav a{font-size:.85rem}
+  .word{font-size:clamp(2.8rem,12vw,6rem)}
+  .sub{position:relative;bottom:auto;margin-top:38vh;font-size:1rem;padding:0 5vw}
+  .cue{bottom:1.8vh}
+  .feat{padding:12vh 0}
+  .feat .wrap{grid-template-columns:1fr;gap:28px}
+  .slab{max-height:50vh;aspect-ratio:4/5;width:100%;max-width:340px}
+  .stories h2{top:11vh;font-size:2.2rem}
+  .stories .hint{top:calc(11vh + 3.2rem);font-size:.8rem}
+  .ringbox{width:min(260px,78vw);height:min(360px,52vh);margin-top:10vh}
+  .nums{grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+  .num{padding:22px 14px}
+  .num strong{font-size:clamp(2.2rem,8vw,3.2rem)}
+  .videos{padding:8vh 0}
+  .vgrid{grid-template-columns:1fr;gap:22px;margin-top:32px}
+  .thumb{height:170px}
+  .vbody{padding:18px}
+  .news{padding:10vh 0}
+  form{flex-direction:column;width:100%}
+  .btn{width:100%;text-align:center;margin-top:0}
+  .fgrid{grid-template-columns:1fr;gap:28px;text-align:center}
+  .fgrid ul{justify-items:center}
+  .copy{margin-top:32px}
+  dialog{width:95vw}
+}
+@media(max-width:480px){
+  .word{font-size:clamp(2.4rem,14vw,4.2rem)}
+  .ring{width:90vmin;height:52vmin}
+  .num strong{font-size:2rem}
+  .card h3{font-size:1.15rem}
+  .card p{font-size:.82rem}
+  .badge{font-size:.7rem}
+  .sub{font-size:.95rem}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<header>
+  <a class="brand" href="#top" aria-label="Ni-Wakati Sports Africa home">
+  <span class="logo">
+    <img src="assets/img/logo.png" alt="" onerror="this.remove()">
+    <em>NW</em>
+  </span>
+</a>
+  <nav aria-label="Sections"><ul>
+    <li><a href="index.html" aria-current="true">Home</a></li>
+    <li><a href="events.html">Highlights</a></li>
+    <li><a href="insights.html">Stories</a></li>
+   <li><a href="involved.html">Get Involved</a></li>
+    
+  </ul></nav>
+</header>
+
+<main id="top">
+<section class="hero" aria-label="Stories and Insights">
+  <div class="world">
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    <h1 style="display:contents"><span class="word w1">Stories</span><span class="word w2">&amp;</span><span class="word w3">Insights</span></h1>
+  </div>
+  <p class="sub">Real impact through sports. Discover the transformative power of community-driven sports development across East Africa.</p>
+  <span class="cue">Scroll to move through the stories</span>
+</section>
+
+<section class="feat" id="impact-story">
+  <div class="wrap">
+    <div>
+      <span class="tag">Impact story</span>
+      <h2>Discover the hidden world</h2>
+      <p>How sports events catalyze community development, social cohesion, and economic opportunities in urban and rural areas.</p>
+      <div class="meta"><span>Feb 5, 2025</span><span>By niwakatisports</span><span>8 min read</span></div>
+      <a class="btn" href="#latest">Read the latest stories</a>
+    </div>
+    <div class="slab" id="slab" role="img" aria-label="Youth football illustration">
+      <img class="slab-img" src="assets/img/1.jpg" alt="">
+      <i></i>
+      <b>Youth community </b>
+    </div>
+  </div>
+</section>
+
+<section class="stories" id="latest" aria-label="Latest stories">
+  <h2>Latest stories</h2>
+  <p class="hint">Keep scrolling to turn the ring</p>
+  <div class="ringbox" id="ringbox">
+    <article class="card" style="--c:#2c7a2c"><img class="card-img" src="assets/img/2.jpg" alt=""><span class="badge">Youth &amp; innovation</span><h3>Alternative pathways to success</h3><p>Empowering the next generation through trampoline, e-sports, football, and other emerging sports that provide alternative pathways to success.</p><footer><span>ni wakati sports</span><span>Feb 2025</span></footer></article>
+    <article class="card" style="--c:#2563eb"><img class="card-img" src="assets/img/3.jpg" alt=""><span class="badge">Innovation</span><h3>Insights &amp; analysis of the future of sports in Africa</h3><p>Insights, analysis, and forward-thinking perspectives on the future of sports in Africa.</p><footer><span>ni wakati sports</span><span>Feb 2025</span></footer></article>
+    <article class="card" style="--c:#7c3aed"><img class="card-img" src="assets/img/4.jpg" alt=""><span class="badge">Community</span><h3>Breaking barriers and creating equal opportunities for all</h3><p>Breaking barriers and creating equal opportunities for all through adaptive sports and inclusive programming.</p><footer><span>ni wakati sports</span><span>Feb 2025</span></footer></article>
+    <article class="card" style="--c:#0f766e"><img class="card-img" src="assets/img/9.jpg" alt=""><span class="badge">Tourism</span><h3>Job facilitation and tourism drive</h3><p>How sports events and facilities can drive tourism, create jobs, and showcase African destinations.</p><footer><span>ni wakati sports</span><span>Feb 2025</span></footer></article>
+    <article class="card" style="--c:#b7791f"><img class="card-img" src="assets/img/7.jpg" alt=""><span class="badge">Sustainability</span><h3>Sustainability &amp; climate justice in sport</h3><p>Addressing climate change through sports, promoting environmental responsibility, and ensuring equitable access to sports facilities.</p><footer><span>ni wakati sports</span><span>Feb 2025</span></footer></article>
+    <article class="card" style="--c:#be185d"><img class="card-img" src="assets/img/8.jpg" alt=""><span class="badge">Impact</span><h3>Communities activated through events</h3><p>How sports events catalyze community development, social cohesion, and economic opportunities in urban and rural areas.</p><footer><span>ni wakati sports</span><span>Feb 2025</span></footer></article>
+  </div>
+</section>
+
+<section class="impact" id="numbers">
+  <div class="wrap">
+    <h2>Our impact in numbers</h2>
+    <div class="nums">
+      <div class="num"><strong data-n="50000">0</strong><span>Youth engaged</span></div>
+      <div class="num"><strong data-n="120">0</strong><span>Communities transformed</span></div>
+      <div class="num"><strong data-n="85" data-s="%">0</strong><span>Program sustainability rate</span></div>
+      <div class="num"><strong data-n="15">0</strong><span>African countries</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="videos" id="video">
+  <div class="wrap">
+    <h2>Video insights</h2>
+    <div class="vgrid">
+      <div class="vcard" style="--c:#2c7a2c"><div class="thumb"><button class="play" aria-label="Play The Power of Community Sports" data-v="dQw4w9WgXcQ">&#9654;</button></div><div class="vbody"><h3>The Power of Community Sports</h3><p>See how grassroots sports programs are transforming lives in Nairobi's informal settlements.</p><div class="vmeta"><span>12:45</span><span>March 1, 2024</span></div></div></div>
+      <div class="vcard" style="--c:#7c3aed"><div class="thumb"><button class="play" aria-label="Play Breaking Gender Barriers" data-v="dQw4w9WgXcQ">&#9654;</button></div><div class="vbody"><h3>Breaking Gender Barriers</h3><p>How sports are empowering women and girls across East Africa to become leaders.</p><div class="vmeta"><span>08:30</span><span>Feb 15, 2024</span></div></div></div>
+      <div class="vcard" style="--c:#b7791f"><div class="thumb"><button class="play" aria-label="Play Sustainable Sports Development" data-v="dQw4w9WgXcQ">&#9654;</button></div><div class="vbody"><h3>Sustainable Sports Development</h3><p>Our approach to creating self-sustaining sports ecosystems in African communities.</p><div class="vmeta"><span>15:20</span><span>Jan 28, 2024</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="news" id="subscribe">
+  <div class="wrap">
+    <h2>Get exclusive insights</h2>
+    <p>Subscribe to our monthly newsletter for in-depth stories, research findings, and exclusive content about sports development in Africa.</p>
+    <form id="f"><label for="em" style="position:absolute;left:-9999px">Email address</label><input id="em" type="email" placeholder="Enter your email address" required><button class="btn" style="margin:0" type="submit">Subscribe</button></form>
+    <div class="msg" role="status" id="msg"></div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fgrid">
+      <div><h4>Stay connected with our stories</h4><p>Subscribe to receive our latest impact stories, research insights, and updates from the field.</p></div>
+      <div><h4>Contact</h4><p><strong>Ni-Wakati Sports Africa</strong><br>Nairobi, Kenya<br>P: +254 731 993 460<br>niwakatisports@gmail.com</p></div>
+      <div><h4>Find us on</h4><ul><li><a href="https://www.linkedin.com/in/steve-muturi-82a412215">LinkedIn</a></li><li><a href="https://www.instagram.com/niwakatisports/reels/">Instagram</a></li><li><a href="#">YouTube</a></li></ul></div>
+    </div>
+    <p class="copy">&copy; <span id="yr">2025</span> Ni-Wakati Sports Africa. All rights reserved.</p>
+  </div>
+</footer>
+
+<dialog id="dlg"><button id="x">Close</button><iframe id="vp" title="Video player" allowfullscreen></iframe></dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+document.getElementById('yr').textContent=new Date().getFullYear();
+const $=s=>document.querySelector(s),$$=s=>gsap.utils.toArray(s);
+
+$$('.num strong').forEach(el=>{
+  const n=+el.dataset.n,s=el.dataset.s||'',o={v:0};
+  ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>gsap.to(o,{v:n,duration:2.2,ease:'power2.out',onUpdate:()=>el.textContent=Math.round(o.v).toLocaleString()+s})});
+});
+
+const links=$$('nav a');
+['#top','#impact-story','#latest','#numbers','#video','#subscribe'].forEach((id,i)=>ScrollTrigger.create({trigger:id,start:'top 55%',end:'bottom 55%',onToggle:s=>{if(s.isActive){links.forEach(l=>l.removeAttribute('aria-current'));links[i].setAttribute('aria-current','true')}}}));
+
+gsap.matchMedia().add('(prefers-reduced-motion: no-preference)',()=>{
+  gsap.to('#bar',{scaleX:1,ease:'none',scrollTrigger:{scrub:.2,start:0,end:'max'}});
+  const h=gsap.timeline({scrollTrigger:{trigger:'.hero',start:'top top',end:'+=220%',scrub:1,pin:true}});
+  gsap.set('.world',{rotationX:0});
+  gsap.set('.w1',{z:0});gsap.set('.w2',{z:-900,opacity:0});gsap.set('.w3',{z:-1800,opacity:0});
+  $$('.ring').forEach((r,i)=>gsap.set(r,{z:-i*420,scale:1+i*.15}));
+  h.to('.ring',{z:'+=2600',ease:'none',duration:3},0)
+   .to('.w1',{z:1400,opacity:0,ease:'power1.in',duration:1.1},0)
+   .to('.w2',{opacity:1,duration:.3},.3).to('.w2',{z:1400,opacity:0,ease:'power1.in',duration:1.1},1)
+   .to('.w3',{opacity:1,duration:.3},1.3).to('.w3',{z:700,ease:'none',duration:1.3},1.3)
+   .to('.world',{rotationX:14,duration:3,ease:'none'},0)
+   .to('.sub,.cue',{opacity:0,y:30,duration:.5},0);
+  gsap.set('.sub',{opacity:1});
+  gsap.from('.w1',{z:-700,opacity:0,duration:1.6,ease:'power3.out'});
+  gsap.from('.sub',{opacity:0,y:30,duration:1,delay:.8});
+  gsap.from('#slab',{rotationY:-70,rotationX:12,z:-300,opacity:.2,ease:'none',scrollTrigger:{trigger:'.feat',start:'top 85%',end:'center 55%',scrub:1}});
+  gsap.from('.feat .wrap>div:first-child>*',{y:50,opacity:0,stagger:.12,duration:.9,ease:'power3.out',scrollTrigger:{trigger:'.feat',start:'top 60%'}});
+  const sl=$('#slab'),rx=gsap.quickTo(sl,'rotationX',{duration:.5}),ry=gsap.quickTo(sl,'rotationY',{duration:.5});
+  sl.parentElement.addEventListener('pointermove',e=>{const b=sl.getBoundingClientRect();ry(((e.clientX-b.left)/b.width-.5)*24);rx(-((e.clientY-b.top)/b.height-.5)*18)});
+  sl.parentElement.addEventListener('pointerleave',()=>{ry(0);rx(0)});
+  const cards=$$('.card'),R=window.innerWidth<700?330:520;
+  cards.forEach((c,i)=>gsap.set(c,{rotationY:i*60,transformOrigin:`50% 50% ${-R}px`,z:R}));
+  gsap.set('#ringbox',{z:-R});
+  gsap.timeline({scrollTrigger:{trigger:'.stories',start:'top top',end:'+=300%',scrub:1,pin:true}})
+    .fromTo('#ringbox',{rotationY:30,z:-R-600,opacity:0},{rotationY:0,z:-R,opacity:1,duration:.4,ease:'power2.out'})
+    .to('#ringbox',{rotationY:-300,duration:3,ease:'none'});
+  gsap.from('.num',{rotationX:-80,y:60,opacity:0,transformOrigin:'50% 100%',stagger:.15,duration:1,ease:'back.out(1.4)',scrollTrigger:{trigger:'.nums',start:'top 80%'}});
+  gsap.from('.vcard',{rotationY:(i)=>[-35,0,35][i],z:-250,y:70,opacity:0,stagger:.15,duration:1.1,ease:'power3.out',scrollTrigger:{trigger:'.vgrid',start:'top 80%'}});
+  gsap.from('.news .wrap>*',{y:40,opacity:0,stagger:.12,duration:.8,scrollTrigger:{trigger:'.news',start:'top 70%'}});
+});
+
+const dlg=$('#dlg'),vp=$('#vp');
+$$('.play').forEach(b=>b.onclick=()=>{vp.src='https://www.youtube.com/embed/'+b.dataset.v;dlg.showModal()});
+const closeV=()=>{vp.src='';dlg.close()};
+$('#x').onclick=closeV;dlg.addEventListener('click',e=>{if(e.target===dlg)closeV()});dlg.addEventListener('cancel',()=>vp.src='');
+
+$('#f').addEventListener('submit',e=>{e.preventDefault();$('#msg').textContent='Thank you for subscribing with '+$('#em').value+'. You will receive our latest stories and insights shortly.';e.target.reset()});
+</script>
+</body>
+</html>

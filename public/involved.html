@@ -60,12 +60,97 @@ input:focus,textarea:focus{outline:0;border-color:var(--g)}textarea{grid-column:
 .q p{height:0;overflow:hidden;font-weight:300;opacity:.8;line-height:1.7;font-size:.92rem}
 .big{font-size:clamp(1.2rem,3vw,2rem);font-weight:300;color:#fff;text-decoration:none;border-bottom:1px solid var(--a);display:inline-block;margin:6px 0}
 .foot{margin-top:50px;font-size:.78rem;font-weight:300;opacity:.6;line-height:2}.foot a{color:#fff;margin-right:18px}
-@media(max-width:800px){nav{left:100px;right:10px;transform:none;overflow-x:auto;scrollbar-width:none}nav a{padding:9px 12px;font-size:.75rem}.cards,.steps{grid-template-columns:1fr}form{grid-template-columns:1fr}textarea,.go{grid-column:span 1}section{align-items:flex-end;padding-inline:6vw}.bar{display:none}.pn{padding:22px}.block.r{margin-left:0}}
+
+/* ----- HAMBURGER MENU (mobile only) ----- */
+.hamburger {
+  display: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 100;
+  flex-direction: column;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 24px);
+  right: 4vw;
+}
+.hamburger span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+@media(max-width:800px){
+  .hamburger {
+    display: flex;
+  }
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.96);
+    backdrop-filter: blur(18px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    z-index: 90;
+    overflow-x: visible;
+  }
+  nav.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  nav a {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 14px 32px;
+    white-space: normal;
+    color: #fff;
+    border-radius: 50px;
+    transition: background 0.3s;
+  }
+  nav a:hover {
+    background: linear-gradient(45deg, var(--g), var(--a));
+  }
+}
 </style>
 </head>
 <body>
 <canvas id="gl"></canvas><div class="vig"></div>
-<nav><a href="index.html">Home</a><a href="events.html">highlights</a><a href="insights.html">Stories</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></nav>
+<button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-nav">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+<nav id="primary-nav"><a href="index.html">Home</a><a href="events.html">highlights</a><a href="insights.html">Stories</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></nav>
 <div class="hud"><b>Ni-Wakati Sports Africa</b><span id="count">01 / 05</span></div>
 <div class="bar"><i id="prog"></i></div>
 
@@ -236,6 +321,45 @@ const clock=new THREE.Clock();
   rings.forEach((r,i)=>{r.rotation.z+=.002*(i+1);r.rotation.x+=.001*(i%2?1:-1)});
   dust.rotation.y=t*.01+S.rotY*.08;renderer.render(scene,camera);requestAnimationFrame(loop)})();
 addEventListener('load',()=>ScrollTrigger.refresh());
+
+// Hamburger menu toggle
+(function() {
+  const hamburger = document.getElementById('hamburger');
+  const nav = document.getElementById('primary-nav');
+  if (!hamburger || !nav) return;
+
+  function toggleMenu() {
+    const isOpen = nav.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    nav.classList.remove('open');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 800) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+})();
 </script>
 </body>
 </html>

@@ -126,6 +126,93 @@ dialog button{position:absolute;top:8px;right:10px;z-index:2;background:var(--go
   .badge{font-size:.7rem}
   .sub{font-size:.95rem}
 }
+
+/* ----- HAMBURGER MENU (mobile only) ----- */
+.hamburger {
+  display: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 100;
+  flex-direction: column;
+  gap: 6px;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+}
+.hamburger span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile nav overlay */
+@media(max-width:860px){
+  .hamburger {
+    display: flex;
+  }
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(6, 17, 12, 0.97);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    z-index: 90;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  nav.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding: 0;
+    overflow: visible;
+    width: 100%;
+    height: 100%;
+  }
+  nav a {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ink);
+    padding: 12px 24px;
+    white-space: normal;
+    letter-spacing: -0.02em;
+  }
+  nav a[aria-current] {
+    border-bottom: 3px solid var(--gold);
+  }
+  /* Hide the default nav ul scroll on mobile when menu is open */
+  nav:not(.open) ul {
+    overflow: hidden;
+  }
+}
 </style>
 </head>
 <body>
@@ -137,13 +224,19 @@ dialog button{position:absolute;top:8px;right:10px;z-index:2;background:var(--go
     <em>NW</em>
   </span>
 </a>
-  <nav aria-label="Sections"><ul>
-    <li><a href="index.html" aria-current="true">Home</a></li>
-    <li><a href="events.html">Highlights</a></li>
-    <li><a href="insights.html">Stories</a></li>
-   <li><a href="involved.html">Get Involved</a></li>
-    
-  </ul></nav>
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-nav">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <nav id="primary-nav" aria-label="Sections">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+<li><a href="events.html">Highlights</a></li>
+<li><a href="insights.html" aria-current="page">Stories</a></li>
+<li><a href="involved.html">Get Involved</a></li>
+    </ul>
+  </nav>
 </header>
 
 <main id="top">
@@ -284,6 +377,49 @@ const closeV=()=>{vp.src='';dlg.close()};
 $('#x').onclick=closeV;dlg.addEventListener('click',e=>{if(e.target===dlg)closeV()});dlg.addEventListener('cancel',()=>vp.src='');
 
 $('#f').addEventListener('submit',e=>{e.preventDefault();$('#msg').textContent='Thank you for subscribing with '+$('#em').value+'. You will receive our latest stories and insights shortly.';e.target.reset()});
+
+// Hamburger menu toggle
+(function() {
+  const hamburger = document.getElementById('hamburger');
+  const nav = document.getElementById('primary-nav');
+  if (!hamburger || !nav) return;
+
+  function toggleMenu() {
+    const isOpen = nav.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    // Prevent body scroll when menu is open
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    nav.classList.remove('open');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+
+  // Close menu when a nav link is clicked
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close menu on window resize if wider than mobile breakpoint
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 860) {
+      closeMenu();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) {
+      closeMenu();
+    }
+  });
+})();
 </script>
 </body>
 </html>

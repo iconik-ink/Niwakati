@@ -1,0 +1,1 @@
+postgresql://niwakati_db_user:MJaHQ3kprDQx7S1aM35NnHkvamktoGNg@dpg-db0unjnavr4c739e9oh0-a/niwakati_db
